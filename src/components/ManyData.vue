@@ -21,6 +21,12 @@
             :items-per-page="10"
             class="elevation-3"
         >
+        
+            <template v-for="objectKey in ['address', 'company']" 
+                v-slot:[`item.${objectKey}`]="{ item }">
+                  {{ item[objectKey] }}
+            </template>
+
         </v-data-table>
 
         <!-- Mobile -->

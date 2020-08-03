@@ -143,13 +143,11 @@ const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
                     if(i === 0){
                         keys.forEach(key => {
                             this.headers.push({text: this.capitalize(key), value: key, status: true})
-                            result[key] = data[key]
-                        });
-                    } else {
-                        keys.forEach(key => {
-                            result[key] = data[key]
                         });
                     }
+                    keys.forEach(key => {
+                        result[key] = data[key]
+                    });
                     this.body.push(result)
                 });
             }
@@ -189,14 +187,12 @@ const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
                 .then(res => {
                     var data = res.data
                     if(res.data[0]){
-                        var keys = Object.keys(res.data[0])
-                        keys = keys.filter(k => typeof(res.data[0][k]) !== 'object')
-                        console.log(keys)
+                        const keys = Object.keys(res.data[0])
+                        //keys = keys.filter(k => typeof(res.data[0][k]) !== 'object')
                         this.createTable(keys, data)
                         this.singleData = null
                         status = 200
                         this.error = null
-                        console.log(res)
                     } else if(res.data){
                         this.singleData = res.data
                         this.cleanTable()
