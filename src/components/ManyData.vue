@@ -1,5 +1,7 @@
 <template>
   <div>
+    <ObjectCardModal :instance="objectCardModalInstance" />
+
     <!-- Labels -->
     <div class="labels">
       <v-chip
@@ -26,7 +28,9 @@
         v-for="objectKey in ['address', 'company']"
         v-slot:[`item.${objectKey}`]="{ item }"
       >
-        {{ item[objectKey] }}
+        <div @click="objectCardModalInstance.open(objectKey, item[objectKey])">
+          [ Object ]
+        </div>
       </template>
     </v-data-table>
 
@@ -69,10 +73,18 @@
 </template>
 
 <script>
+import ObjectCardModal, {
+  ObjectCardModalService,
+} from "@/components/ObjectCardModal";
+
 export default {
+  components: {
+    ObjectCardModal,
+  },
   props: ["headers", "body", "screenWidth"],
   data() {
     return {
+      objectCardModalInstance: new ObjectCardModalService(),
       mobilePage: 1,
       color: [
         "primary",

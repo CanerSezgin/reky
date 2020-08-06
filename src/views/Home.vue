@@ -182,7 +182,7 @@ export default {
       }
     },
     goHome() {
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "Home" });
       this.cleanTable();
       this.form.endpoint = "";
       this.singleData = null;
@@ -225,7 +225,7 @@ export default {
       }
       if (this.isValidUrl(this.form.endpoint)) {
         this.$router.push({
-          name: "home",
+          name: "Home",
           query: { endpoint: this.form.endpoint },
         });
         this.apiRequest();
@@ -243,7 +243,6 @@ export default {
     },
     apiRequest() {
       const endpoint = this.$route.query.endpoint;
-      console.log(endpoint);
       this.form.endpoint = endpoint;
       if (this.isValidUrl(endpoint)) {
         this.mobilePage = 1;

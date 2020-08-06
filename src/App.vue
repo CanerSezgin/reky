@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <v-content class="mx-5">
-      <router-view />
-    </v-content>
+    <router-view />
   </v-app>
 </template>
 
