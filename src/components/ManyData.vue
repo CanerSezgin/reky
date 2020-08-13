@@ -1,15 +1,16 @@
 <template>
   <div>
     <ObjectCardModal :instance="objectCardModalInstance" />
-
     <!-- Labels -->
     <div class="labels">
       <v-chip
         v-for="(header, i) in headers"
+        @click="changeStatus(header)"
         :key="i"
         label
-        class="ma-2 white--text"
-        :color="color[i % 5]"
+        class="ma-2"
+        :color="`${header.status ? 'darken-1' : 'lighten-5'} ${color[i % 5]}`"
+        :dark="header.status"
       >
         {{ header.text }}
       </v-chip>
@@ -19,7 +20,7 @@
     <v-data-table
       v-if="screenWidth > 599"
       dense
-      :headers="headers"
+      :headers="headers.filter((header) => header.status)"
       :items="body"
       :items-per-page="10"
       class="elevation-3"
@@ -28,8 +29,11 @@
         v-for="objectKey in ['address', 'company']"
         v-slot:[`item.${objectKey}`]="{ item }"
       >
-        <div @click="objectCardModalInstance.open(objectKey, item[objectKey])">
-          [ Object ]
+        <div
+          class="special pointer"
+          @click="objectCardModalInstance.open(objectKey, item[objectKey])"
+        >
+          Details
         </div>
       </template>
     </v-data-table>
@@ -86,14 +90,14 @@ export default {
     return {
       objectCardModalInstance: new ObjectCardModalService(),
       mobilePage: 1,
-      color: [
-        "primary",
-        "teal darken-1",
-        "cyan darken-2",
-        "pink",
-        "orange darken-2",
-      ],
+      color: ["purple", "teal ", "cyan", "pink", "orange"],
     };
+  },
+  methods: {
+    changeStatus(header) {
+      console.log(header);
+      header.status = !header.status;
+    },
   },
 };
 </script>
