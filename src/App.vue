@@ -17,4 +17,11 @@ export default {
 .longtext {
   word-wrap: break-word;
 }
+.special {
+  font-weight: 500;
+  color: brown;
+}
+.pointer {
+  cursor: pointer;
+}
 </style>
