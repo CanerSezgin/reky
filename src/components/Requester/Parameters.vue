@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-card>
-      <v-card-title>params ({{ validParams.length }})</v-card-title>
-      <v-row no-gutters v-for="(param, index) in params" :key="index">
+      <v-card-title>queryList ({{ validQueryList.length }})</v-card-title>
+      <v-row no-gutters v-for="(param, index) in queryList" :key="index">
         <v-col cols="12" sm="6" class="pa-1">
           <v-text-field
             v-model="param.key"
@@ -33,41 +33,48 @@
     <div class="text-right">
       <v-btn @click="addNewParam" text>Add New</v-btn>
     </div>
+    {{ queryList }} <br />
+    {{ validQueryList }}
   </div>
 </template>
 
 <script>
-const getQueryString = (params) => {
-  if (!params.length) return "";
-  const paramsCopy = JSON.parse(JSON.stringify(params));
-  const firstParam = paramsCopy.shift();
+// TODO: fix 2 way data bind
+const getQueryStringFromQueryList = (queryList) => {
+  if (!queryList.length) return "";
+  const queryListCopy = JSON.parse(JSON.stringify(queryList));
+  const firstParam = queryListCopy.shift();
   return (
     `?${firstParam.key}=${firstParam.value}` +
-    paramsCopy.reduce((str, param) => str + `&${param.key}=${param.value}`, "")
+    queryListCopy.reduce(
+      (str, param) => str + `&${param.key}=${param.value}`,
+      ""
+    )
   );
 };
+
 export default {
   props: {
-    params: Array,
+    queryList: Array,
   },
   computed: {
-    validParams() {
-      return this.params.filter((param) => param.key && param.value);
+    validQueryList() {
+      return this.queryList.filter((param) => param.key && param.value);
     },
   },
   watch: {
-    validParams() {
-      const queryString = getQueryString(this.validParams);
+    validQueryList() {
+      const queryString = getQueryStringFromQueryList(this.queryList);
       console.log({ queryString });
       if (queryString) this.$emit("query-string-changed", queryString);
     },
   },
   methods: {
     addNewParam() {
-      this.params.push({ key: "", value: "" });
+      this.queryList.push({ key: "", value: "" });
     },
     deleteParam(index) {
-      this.params.splice(index, 1);
+      this.queryList.splice(index, 1);
     },
   },
 };

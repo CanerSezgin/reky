@@ -18,7 +18,7 @@
         label="URL"
         aria-autocomplete="off"
         outlined
-        hide-details
+        :error-messages="URLError ? 'Invalid URL' : null"
       ></v-text-field>
 
       <v-btn large class="ma-2" outlined>
@@ -30,11 +30,12 @@
       <v-col>
         <Parameters
           @query-string-changed="updateQueryString"
-          :params="params"
+          :queryList="queryList"
         />
       </v-col>
     </v-row>
     {{ headers }}
+    {{ queryString }}
   </div>
 </template>
 
@@ -42,10 +43,21 @@
 import axios from "axios";
 import Headers from "@/components/Requester/Headers";
 import Parameters from "@/components/Requester/Parameters";
+
+const getQueryListFromQueryString = (qs) => {
+  if (!qs || qs[0] !== "?") return [];
+  const questionMarkedRemoved = qs.substring(1);
+  return questionMarkedRemoved.split("&").map((query) => {
+    const [key = "", value = ""] = query.split("=");
+    return { key, value };
+  });
+};
+
 export default {
   components: { Headers, Parameters },
   data() {
     return {
+      URLError: true,
       METHODS: [
         { text: "GET", value: "get" },
         { text: "POST", value: "post" },
@@ -59,8 +71,34 @@ export default {
       method: "get",
       url: "www.caner.com?abc=1&def=2",
       headers: [],
-      params: [],
+      queryList: [],
     };
+  },
+  computed: {
+    urlComponents() {
+      try {
+        this.URLError = false;
+        return new URL(this.url);
+      } catch (error) {
+        this.URLError = true;
+        return null;
+      }
+    },
+    queryString() {
+      if (this.urlComponents) {
+        return this.urlComponents.search;
+      }
+
+      const indexOfQSStart = this.url.indexOf("?");
+      if (indexOfQSStart === -1) return "";
+      return this.url.substring(indexOfQSStart);
+    },
+  },
+  watch: {
+    queryString(val) {
+      console.log("QS Changed", val);
+      this.queryList = getQueryListFromQueryString(val);
+    },
   },
   methods: {
     updateQueryString(qs) {
