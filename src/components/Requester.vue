@@ -28,7 +28,10 @@
 
     <v-row>
       <v-col>
-        <Headers :headers="headers" />
+        <Parameters
+          @query-string-changed="updateQueryString"
+          :params="params"
+        />
       </v-col>
     </v-row>
     {{ headers }}
@@ -38,8 +41,9 @@
 <script>
 import axios from "axios";
 import Headers from "@/components/Requester/Headers";
+import Parameters from "@/components/Requester/Parameters";
 export default {
-  components: { Headers },
+  components: { Headers, Parameters },
   data() {
     return {
       METHODS: [
@@ -53,10 +57,19 @@ export default {
       ],
 
       method: "get",
-      url: "",
-      headers: [{ key: "Authorization", value: "asasdafd" }],
-      params: {},
+      url: "www.caner.com?abc=1&def=2",
+      headers: [],
+      params: [],
     };
+  },
+  methods: {
+    updateQueryString(qs) {
+      const indexOfQSStart = this.url.indexOf("?");
+      if (indexOfQSStart !== -1) {
+        this.url = this.url.substring(0, indexOfQSStart);
+        this.url += qs;
+      }
+    },
   },
 };
 </script>
