@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Requester from "@/components/Requester";
+import Requester from "@/components/Requester/Requester";
 import axios from "axios";
 import ErrorMessage from "@/components/ErrorMessage";
 import ManyData from "@/components/ManyData";

@@ -28,7 +28,8 @@
 
     <v-row>
       <v-col>
-        <Parameters
+        <Headers :headers="headers" />
+        <QueryParams
           @query-string-changed="updateQueryString"
           :queryList="queryList"
         />
@@ -42,19 +43,12 @@
 <script>
 import axios from "axios";
 import Headers from "@/components/Requester/Headers";
-import Parameters from "@/components/Requester/Parameters";
+import QueryParams from "@/components/Requester/QueryParams";
 
-const getQueryListFromQueryString = (qs) => {
-  if (!qs || qs[0] !== "?") return [];
-  const questionMarkedRemoved = qs.substring(1);
-  return questionMarkedRemoved.split("&").map((query) => {
-    const [key = "", value = ""] = query.split("=");
-    return { key, value };
-  });
-};
+import { getQueryListFromQueryString } from "./QueryParamHelper";
 
 export default {
-  components: { Headers, Parameters },
+  components: { Headers, QueryParams },
   data() {
     return {
       URLError: true,
@@ -69,7 +63,7 @@ export default {
       ],
 
       method: "get",
-      url: "www.caner.com?abc=1&def=2",
+      url: "www.caner.com/123/456/?abc=1&def=2",
       headers: [],
       queryList: [],
     };
