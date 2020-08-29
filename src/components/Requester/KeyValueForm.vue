@@ -2,10 +2,10 @@
   <div>
     <v-card>
       <v-card-title>{{ listName }} ({{ validList.length }})</v-card-title>
-      <v-row no-gutters v-for="(param, index) in list" :key="index">
+      <v-row no-gutters v-for="(el, index) in list" :key="index">
         <v-col cols="12" sm="6" class="pa-1">
           <v-text-field
-            v-model="param.key"
+            v-model="el.key"
             :label="`${keyLabel} ${index + 1}`"
             aria-autocomplete="off"
             dense
@@ -15,7 +15,7 @@
         </v-col>
         <v-col cols="12" sm="5" class="pa-1">
           <v-text-field
-            v-model="param.value"
+            v-model="el.value"
             :label="`Value ${index + 1}`"
             aria-autocomplete="off"
             dense
@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     validList() {
-      return this.list.filter((param) => param.key && param.value);
+      return this.list.filter((el) => el.key && el.value);
     },
   },
   watch: {

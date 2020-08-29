@@ -21,7 +21,7 @@
         :error-messages="URLError ? 'Invalid URL' : null"
       ></v-text-field>
 
-      <v-btn large class="ma-2" outlined>
+      <v-btn @click="send" large class="ma-2" outlined>
         <v-icon left>mdi-send</v-icon> Send
       </v-btn>
     </v-row>
@@ -35,8 +35,11 @@
         />
       </v-col>
     </v-row>
-    {{ headers }}
-    {{ queryString }}
+    {{ headers }} <br />
+    {{ queryString }} <br />
+    Method: {{ method }} <br />
+
+    <Response :response="response" />
   </div>
 </template>
 
@@ -44,11 +47,21 @@
 import axios from "axios";
 import Headers from "@/components/Requester/Headers";
 import QueryParams from "@/components/Requester/QueryParams";
+import Response from "@/components/Response/Response";
 
 import { getQueryListFromQueryString } from "./QueryParamHelper";
 
+const axiosRequest = async ({ method, url, payload, config }) => {
+  try {
+    const response = await axios[method](url, payload, config);
+    return response;
+  } catch ({ response }) {
+    return response;
+  }
+};
+
 export default {
-  components: { Headers, QueryParams },
+  components: { Headers, QueryParams, Response },
   data() {
     return {
       URLError: true,
@@ -63,9 +76,10 @@ export default {
       ],
 
       method: "get",
-      url: "www.caner.com/123/456/?abc=1&def=2",
+      url: "https://jsonplaceholder.typicode.com/posts/1",
       headers: [],
       queryList: [],
+      response: null,
     };
   },
   computed: {
@@ -101,6 +115,15 @@ export default {
         this.url = this.url.substring(0, indexOfQSStart);
         this.url += qs;
       }
+    },
+    async send() {
+      const response = await axiosRequest({
+        method: this.method,
+        url: this.url,
+        config: {},
+      });
+      this.response = response;
+      console.log(this.response);
     },
   },
 };

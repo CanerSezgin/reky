@@ -6,7 +6,7 @@
           class="px-5"
           xs="12"
           md="6"
-          v-for="(data, key, i) in singleData"
+          v-for="(data, key, i) in object"
           :key="key"
           :style="i % 2 == 0 ? 'border-right: 2px solid #00897B;' : ''"
         >
@@ -23,7 +23,12 @@
 import ObjectData from "@/components/ObjectData";
 export default {
   components: { ObjectData },
-  props: ["singleData"],
+  props: {
+    object: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 
