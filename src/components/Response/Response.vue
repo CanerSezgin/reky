@@ -3,24 +3,16 @@
     Response
 
     <div v-if="response">
-      <template>
-        <v-tabs fixed-tabs background-color="indigo" dark v-model="tab" ani>
-          <v-tab>
-            Visualized
-          </v-tab>
-          <v-tab>
-            Body
-          </v-tab>
-          <v-tab> Headers ({{ headers.length }}) </v-tab>
-        </v-tabs>
-      </template>
+      <v-tabs fixed-tabs background-color="indigo" dark v-model="tab" ani>
+        <v-tab>
+          Body
+        </v-tab>
+        <v-tab> Headers ({{ headers.length }}) </v-tab>
+      </v-tabs>
 
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <Visualized :json="response.data" />
-        </v-tab-item>
-        <v-tab-item>
-          <Body :body="response.data" />
+          <Body :body="response.data" :responseType="responseType" />
         </v-tab-item>
         <v-tab-item>
           <Headers :headers="headers" />
@@ -32,10 +24,9 @@
 
 <script>
 import Headers from "@/components/Response/Headers";
-import Visualized from "@/components/Response/Visualized";
 import Body from "@/components/Response/Body";
 export default {
-  components: { Headers, Visualized, Body },
+  components: { Headers, Body },
   props: {
     response: {
       type: Object,
@@ -51,6 +42,13 @@ export default {
     headers() {
       const entries = Object.entries(this.response.headers);
       return entries.map((entry) => ({ key: entry[0], value: entry[1] }));
+    },
+    responseType() {
+      const contentType = this.response.headers["content-type"];
+
+      if (contentType.includes("json")) return "json";
+      else if (contentType.includes("html")) return "html";
+      else "";
     },
   },
 };
