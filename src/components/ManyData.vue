@@ -79,24 +79,66 @@
 <script>
 import ObjectCardModal, {
   ObjectCardModalService,
-} from "@/components/ObjectCardModal";
+} from '@/components/ObjectCardModal';
 
 export default {
   components: {
     ObjectCardModal,
   },
-  props: ["headers", "body", "screenWidth"],
+  props: {
+    array: {
+      type: Array,
+      required: true,
+    },
+    screenWidth: {
+      type: Number,
+      default: 600,
+    },
+  },
   data() {
     return {
+      headers: [],
+      body: [],
       objectCardModalInstance: new ObjectCardModalService(),
       mobilePage: 1,
-      color: ["purple", "teal ", "cyan", "pink", "orange"],
+      color: ['purple', 'teal ', 'cyan', 'pink', 'orange'],
     };
+  },
+  created() {
+    const keys = Object.keys(this.array[0]);
+    this.createTable(keys, this.array);
   },
   methods: {
     changeStatus(header) {
       console.log(header);
       header.status = !header.status;
+    },
+    capitalize: (str) =>
+      str ? str.charAt(0).toUpperCase() + str.slice(1) : '',
+    cleanTable() {
+      this.headers = [];
+      this.body = [];
+    },
+    createTable(keys, dataset) {
+      this.cleanTable();
+      if (keys.length > 0) {
+        dataset.forEach((data, i) => {
+          let result = {};
+          if (i === 0) {
+            keys.forEach((key) => {
+              this.headers.push({
+                text: this.capitalize(key),
+                value: key,
+                status: true,
+              });
+            });
+          }
+          keys.forEach((key) => {
+            result[key] = data[key];
+          });
+          this.body.push(result);
+        });
+      }
     },
   },
 };
