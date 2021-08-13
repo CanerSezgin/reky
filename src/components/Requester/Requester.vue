@@ -35,8 +35,9 @@
         />
       </v-col>
     </v-row>
-    {{ headers }} <br />
-    {{ queryString }} <br />
+    headers: {{ headers }} <br />
+    queryList: {{ queryList }} <br />
+    queryString: {{ queryString }} <br />
     Method: {{ method }} <br />
 
     <Response :response="response" />
@@ -44,12 +45,12 @@
 </template>
 
 <script>
-import axios from "axios";
-import Headers from "@/components/Requester/Headers";
-import QueryParams from "@/components/Requester/QueryParams";
-import Response from "@/components/Response/Response";
+import axios from 'axios';
+import Headers from '@/components/Requester/Headers';
+import QueryParams from '@/components/Requester/QueryParams';
+import Response from '@/components/Response/Response';
 
-import { getQueryListFromQueryString } from "./QueryParamHelper";
+import { getQueryListFromQueryString } from './QueryParamHelper';
 
 const axiosRequest = async ({ method, url, payload, config }) => {
   try {
@@ -66,17 +67,17 @@ export default {
     return {
       URLError: true,
       METHODS: [
-        { text: "GET", value: "get" },
-        { text: "POST", value: "post" },
-        { text: "PUT", value: "put" },
-        { text: "PATCH", value: "patch" },
-        { text: "DELETE", value: "delete" },
-        { text: "HEAD", value: "head" },
-        { text: "OPTIONS", value: "options" },
+        { text: 'GET', value: 'get' },
+        { text: 'POST', value: 'post' },
+        { text: 'PUT', value: 'put' },
+        { text: 'PATCH', value: 'patch' },
+        { text: 'DELETE', value: 'delete' },
+        { text: 'HEAD', value: 'head' },
+        { text: 'OPTIONS', value: 'options' },
       ],
 
-      method: "get",
-      url: "https://jsonplaceholder.typicode.com/posts/1",
+      method: 'get',
+      url: 'https://jsonplaceholder.typicode.com/posts',
       headers: [],
       queryList: [],
       response: null,
@@ -97,20 +98,20 @@ export default {
         return this.urlComponents.search;
       }
 
-      const indexOfQSStart = this.url.indexOf("?");
-      if (indexOfQSStart === -1) return "";
+      const indexOfQSStart = this.url.indexOf('?');
+      if (indexOfQSStart === -1) return '';
       return this.url.substring(indexOfQSStart);
     },
   },
   watch: {
     queryString(val) {
-      console.log("QS Changed", val);
+      console.log('QS Changed', val);
       this.queryList = getQueryListFromQueryString(val);
     },
   },
   methods: {
     updateQueryString(qs) {
-      const indexOfQSStart = this.url.indexOf("?");
+      const indexOfQSStart = this.url.indexOf('?');
       if (indexOfQSStart !== -1) {
         this.url = this.url.substring(0, indexOfQSStart);
         this.url += qs;
