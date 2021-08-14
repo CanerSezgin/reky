@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { capitalize } from '@/utils/general';
 import ObjectCardModal, {
   ObjectCardModalService,
 } from '@/components/ObjectCardModal';
@@ -113,8 +114,6 @@ export default {
       console.log(header);
       header.status = !header.status;
     },
-    capitalize: (str) =>
-      str ? str.charAt(0).toUpperCase() + str.slice(1) : '',
     cleanTable() {
       this.headers = [];
       this.body = [];
@@ -127,7 +126,7 @@ export default {
           if (i === 0) {
             keys.forEach((key) => {
               this.headers.push({
-                text: this.capitalize(key),
+                text: capitalize(key),
                 value: key,
                 status: true,
               });
