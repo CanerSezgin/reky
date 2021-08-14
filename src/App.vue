@@ -6,14 +6,20 @@
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
   data: () => ({
     //
   }),
 };
 </script>
 
-<style>
+<style lang="scss">
+.v-application {
+  [class*='text-'] {
+    font-family: Tahoma, Verdana, Segoe, sans-serif !important;
+  }
+  font-family: Tahoma, Verdana, Segoe, sans-serif !important;
+}
 .longtext {
   word-wrap: break-word;
 }

@@ -1,32 +1,35 @@
 <template>
   <div>
-    <v-card>
-      <v-card-title>{{ listName }} ({{ validList.length }})</v-card-title>
+    <v-card flat class="transparent">
       <v-row no-gutters v-for="(el, index) in list" :key="index">
-        <v-col cols="12" sm="6" class="pa-1">
+        <v-col cols="12" sm="6">
           <v-text-field
             v-model="el.key"
             :label="`${keyLabel} ${index + 1}`"
             aria-autocomplete="off"
-            dense
-            outlined
+            filled
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="5" class="pa-1">
+        <v-col cols="12" sm="5">
           <v-text-field
             v-model="el.value"
             :label="`Value ${index + 1}`"
             aria-autocomplete="off"
-            dense
-            outlined
+            filled
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="1" class="text-center pa-1">
-          <v-btn icon @click="deleteEl(index)">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+        <v-col cols="12" sm="1" class="text-center">
+          <v-card
+            height="56"
+            outlined
+            style="display: flex; justify-content: center; align-items:center;"
+          >
+            <v-btn icon @click="deleteEl(index)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </v-card>
         </v-col>
       </v-row>
     </v-card>
@@ -39,10 +42,6 @@
 <script>
 export default {
   props: {
-    listName: {
-      type: String,
-      required: true,
-    },
     list: {
       type: Array,
       required: true,

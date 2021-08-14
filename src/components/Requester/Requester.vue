@@ -8,7 +8,7 @@
           item-text="text"
           item-value="value"
           label="Method"
-          outlined
+          filled
           hide-details
         ></v-select>
       </v-card>
@@ -17,28 +17,33 @@
         v-model="url"
         label="URL"
         aria-autocomplete="off"
-        outlined
+        filled
         :error-messages="URLError ? 'Invalid URL' : null"
+        hide-details
       ></v-text-field>
 
-      <v-btn @click="send" large class="ma-2" outlined>
+      <v-btn @click="send" x-large height="56">
         <v-icon left>mdi-send</v-icon> Send
       </v-btn>
     </v-row>
 
-    <v-row>
-      <v-col>
-        <Headers :headers="headers" />
-        <QueryParams
-          @query-string-changed="updateQueryString"
-          :queryList="queryList"
-        />
+    <v-row class="mt-4">
+      <v-col class="px-0">
+        <Tabs
+          :tabs="[
+            `Parameters &nbsp; ¨ ${queryList.length}`,
+            `Headers &nbsp; ¨ ${headers.length}`,
+          ]"
+        >
+          <template v-slot:tab-0
+            ><QueryParams
+              @query-string-changed="updateQueryString"
+              :queryList="queryList"
+          /></template>
+          <template v-slot:tab-1> <Headers :headers="headers" /> </template>
+        </Tabs>
       </v-col>
     </v-row>
-    <!-- headers: {{ headers }} <br />
-    queryList: {{ queryList }} <br />
-    queryString: {{ queryString }} <br />
-    Method: {{ method }} <br /> -->
 
     <Response :response="response" />
   </div>
@@ -49,11 +54,12 @@ import { axiosRequest } from '@/utils/axios';
 import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
+import Tabs from '@/components/Tabs';
 
 import { getQueryListFromQueryString } from './QueryParamHelper';
 
 export default {
-  components: { Headers, QueryParams, Response },
+  components: { Headers, QueryParams, Response, Tabs },
   data() {
     return {
       URLError: true,

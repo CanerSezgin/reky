@@ -1,7 +1,6 @@
 <template>
   <div>
     <KeyValueForm
-      listName="Query Params"
       :list="queryList"
       keyLabel="Parameter"
       @valid-list-changed="validListChanged"
@@ -10,8 +9,8 @@
 </template>
 
 <script>
-import KeyValueForm from "@/components/Requester/KeyValueForm";
-import { getQueryStringFromQueryList } from "./QueryParamHelper";
+import KeyValueForm from '@/components/Requester/KeyValueForm';
+import { getQueryStringFromQueryList } from './QueryParamHelper';
 
 export default {
   components: { KeyValueForm },
@@ -21,7 +20,7 @@ export default {
   methods: {
     validListChanged() {
       const queryString = getQueryStringFromQueryList(this.queryList);
-      if (queryString) this.$emit("query-string-changed", queryString);
+      if (queryString) this.$emit('query-string-changed', queryString);
     },
   },
 };

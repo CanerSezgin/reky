@@ -1,11 +1,11 @@
 <template>
   <div>
-    <KeyValueForm listName="Headers" :list="headers" keyLabel="Header" />
+    <KeyValueForm :list="headers" keyLabel="Header" />
   </div>
 </template>
 
 <script>
-import KeyValueForm from "@/components/Requester/KeyValueForm";
+import KeyValueForm from '@/components/Requester/KeyValueForm';
 
 export default {
   components: { KeyValueForm },
