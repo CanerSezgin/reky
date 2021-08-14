@@ -35,31 +35,22 @@
         />
       </v-col>
     </v-row>
-    headers: {{ headers }} <br />
+    <!-- headers: {{ headers }} <br />
     queryList: {{ queryList }} <br />
     queryString: {{ queryString }} <br />
-    Method: {{ method }} <br />
+    Method: {{ method }} <br /> -->
 
     <Response :response="response" />
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { axiosRequest } from '@/utils/axios';
 import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
 
 import { getQueryListFromQueryString } from './QueryParamHelper';
-
-const axiosRequest = async ({ method, url, payload, config }) => {
-  try {
-    const response = await axios[method](url, payload, config);
-    return response;
-  } catch ({ response }) {
-    return response;
-  }
-};
 
 export default {
   components: { Headers, QueryParams, Response },

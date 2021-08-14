@@ -33,8 +33,6 @@
     <div class="text-right">
       <v-btn @click="addNewEl" text>Add New</v-btn>
     </div>
-    list {{ list }} <br />
-    {{ validList }}
   </div>
 </template>
 
@@ -61,12 +59,12 @@ export default {
   },
   watch: {
     validList(val) {
-      this.$emit("valid-list-changed", val);
+      this.$emit('valid-list-changed', val);
     },
   },
   methods: {
     addNewEl() {
-      this.list.push({ key: "", value: "" });
+      this.list.push({ key: '', value: '' });
     },
     deleteEl(index) {
       this.list.splice(index, 1);

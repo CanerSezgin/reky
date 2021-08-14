@@ -7,21 +7,21 @@
 </template>
 
 <script>
-import Requester from "@/components/Requester/Requester";
-import axios from "axios";
-import ErrorMessage from "@/components/ErrorMessage";
-import ManyData from "@/components/ManyData";
-import SingleData from "@/components/SingleData";
-import GoByClick from "@/components/GoByClick";
-import SocialMediaLinks from "@/components/SocialMediaLinks";
+import Requester from '@/components/Requester/Requester';
+import axios from 'axios';
+import ErrorMessage from '@/components/ErrorMessage';
+import ManyData from '@/components/ManyData';
+import SingleData from '@/components/SingleData';
+import GoByClick from '@/components/GoByClick';
+import SocialMediaLinks from '@/components/SocialMediaLinks';
 const pattern = new RegExp(
-  "^(https?:\\/\\/)?" + // protocol
-  "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-  "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-  "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-  "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-    "(\\#[-a-z\\d_]*)?$",
-  "i"
+  '^(https?:\\/\\/)?' + // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$',
+  'i'
 ); // fragment locator
 export default {
   components: {
@@ -38,43 +38,46 @@ export default {
       history: [],
       examples: [
         {
-          endpoint: "https://api.github.com/users",
+          endpoint: 'https://api.n.exchange/en/api/v1/currency/',
+        },
+        {
+          endpoint: 'https://api.github.com/users',
           status: 200,
-          type: "Multiple",
+          type: 'Multiple',
           desc:
-            "If the response contains many objects, it will be displated as a DataTable",
+            'If the response contains many objects, it will be displated as a DataTable',
         },
         {
-          endpoint: "https://api.github.com/users/canersezgin",
+          endpoint: 'https://api.github.com/users/canersezgin',
           status: 200,
-          type: "Single",
+          type: 'Single',
           desc:
-            "If the response is a single object, it will be displayed as a List rather than DataTable",
+            'If the response is a single object, it will be displayed as a List rather than DataTable',
         },
         {
-          endpoint: "https://jsonplaceholder.typicode.com/posts?_limit=8",
+          endpoint: 'https://jsonplaceholder.typicode.com/posts?_limit=8',
           status: 200,
-          type: "Multiple",
-          desc: "You can send a query if the endpoint supports",
+          type: 'Multiple',
+          desc: 'You can send a query if the endpoint supports',
         },
         {
-          endpoint: "https://jsonplaceholder.typicode.com/users",
+          endpoint: 'https://jsonplaceholder.typicode.com/users',
           status: 200,
-          type: "Multiple",
-          desc: "If the multiple data response contains object, it is ignored",
+          type: 'Multiple',
+          desc: 'If the multiple data response contains object, it is ignored',
         },
       ],
       headers: [],
       body: [],
       rules: [
-        (value) => (value ? !!pattern.test(value) || "Invalid URL" : true),
+        (value) => (value ? !!pattern.test(value) || 'Invalid URL' : true),
       ],
       form: {
-        endpoint: "",
+        endpoint: '',
       },
       singleData: null,
       responseCode: 0,
-      error: "",
+      error: '',
     };
   },
   created() {
@@ -86,22 +89,22 @@ export default {
   },
   methods: {
     track() {
-      if (window.location.hostname === "localhost") {
-        console.log("Tracking", this.$route.name);
+      if (window.location.hostname === 'localhost') {
+        console.log('Tracking', this.$route.name);
       } else {
-        this.$ga.page("/");
+        this.$ga.page('/');
       }
     },
     goHome() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: 'Home' });
       this.cleanTable();
-      this.form.endpoint = "";
+      this.form.endpoint = '';
       this.singleData = null;
       this.responseCode = 0;
-      this.error = "";
+      this.error = '';
     },
     capitalize: (str) =>
-      str ? str.charAt(0).toUpperCase() + str.slice(1) : "",
+      str ? str.charAt(0).toUpperCase() + str.slice(1) : '',
     isValidUrl: (url) => !!pattern.test(url),
     cleanTable() {
       this.headers = [];
@@ -131,12 +134,12 @@ export default {
     goToEndpoint() {
       const endpoint = this.$route.query.endpoint;
       if (endpoint === this.form.endpoint) {
-        console.log("same endpoint, dont send any request");
+        console.log('same endpoint, dont send any request');
         return;
       }
       if (this.isValidUrl(this.form.endpoint)) {
         this.$router.push({
-          name: "Home",
+          name: 'Home',
           query: { endpoint: this.form.endpoint },
         });
         this.apiRequest();
@@ -184,19 +187,19 @@ export default {
             this.singleData = null;
             status = err.response.status;
             this.error = err.response.data || {
-              message: "There is not any Error Message",
+              message: 'There is not any Error Message',
             };
             if (
               (Object.keys(this.error).length === 0 && status === 404) ||
-              typeof this.error === "string"
+              typeof this.error === 'string'
             ) {
-              this.error = { message: "Not Found" };
+              this.error = { message: 'Not Found' };
             }
             this.saveHistory({ endpoint, status });
             this.responseCode = status;
           });
       } else {
-        console.log("invalid url");
+        console.log('invalid url');
         this.cleanTable();
       }
     },

@@ -6,7 +6,7 @@
       </v-card-title>
 
       <div class="mx-5">
-        <SingleData :singleData="instance.data" />
+        <SingleData :object="instance.data" />
       </div>
 
       <v-divider></v-divider>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import SingleData from "@/components/SingleData";
+import SingleData from '@/components/SingleData';
 export class ObjectCardModalService {
   constructor() {
     this.setDefaultProps();
@@ -31,7 +31,7 @@ export class ObjectCardModalService {
     const defaultProps = {
       status: false,
       data: null,
-      key: "",
+      key: '',
     };
     Object.keys(defaultProps).forEach((props) => {
       this[props] = defaultProps[props];
@@ -50,7 +50,7 @@ export default {
   components: {
     SingleData,
   },
-  props: ["instance"],
+  props: ['instance'],
 };
 </script>
 
