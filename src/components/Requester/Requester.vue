@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="mt-5">
+    <v-row class="mt-1">
       <v-card flat class="transparent" width="150">
         <v-select
           v-model="method"
@@ -46,6 +46,8 @@
         </Tabs>
       </v-col>
     </v-row>
+
+    <v-divider></v-divider>
 
     <Response :response="response" />
   </div>

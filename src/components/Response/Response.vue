@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { getStatusCodeColor } from '@/utils/statusCode';
 import Headers from '@/components/Response/Headers';
 import Body from '@/components/Response/Body';
 import Tabs from '@/components/Tabs';
@@ -78,15 +79,7 @@ export default {
       );
     },
     statusCodeColor() {
-      if (this.statusCode >= 200 && this.statusCode < 300) {
-        return '#4DB6AC'; // green
-      } else if (this.statusCode >= 300 && this.statusCode < 400) {
-        return '#0097A7'; // blue
-      } else if (this.statusCode >= 400) {
-        return '#FF7043'; // red
-      } else {
-        return '#78909C'; // gray
-      }
+      return getStatusCodeColor(this.statusCode);
     },
     duration() {
       return (this.response && this.response.duration) || 0;

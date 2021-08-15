@@ -5,10 +5,7 @@
         class="tab-btn"
         :class="selectedTabIndex === index ? 'selected' : ''"
         style="min-width: 150px; text-align: center;"
-        :style="
-          (selectedTabIndex === index ? `border-color: ${color};` : '') +
-            tabButtonCSS
-        "
+        :style="(selectedTabIndex === index ? selectedCSS : '') + tabButtonCSS"
         @click="selectTab(index)"
         v-for="(tab, index) in tabs"
         :key="index"
@@ -29,9 +26,31 @@ export default {
   props: {
     tabs: { type: Array, required: true },
     color: { type: String, default: 'salmon' },
+    dark: { type: Boolean, default: false },
+    activeBtnType: { type: String, default: 'border' }, // border, background
     tabContainerCSS: { type: String, required: false },
     tabButtonsContainerCSS: { type: String, required: false },
     tabButtonCSS: { type: String, required: false },
+  },
+  computed: {
+    selectedCSS() {
+      switch (this.activeBtnType) {
+        case 'border':
+          return this.selectedWithBorderCSS;
+        case 'background':
+          return this.selectedWithBackgroundCSS;
+        default:
+          return this.selectedWithBorderCSS;
+      }
+    },
+    selectedWithBorderCSS() {
+      return `border-bottom: 3px solid ${this.color};`;
+    },
+    selectedWithBackgroundCSS() {
+      return `background: ${this.color}; ${
+        this.dark ? 'color: white;' : ''
+      } border-radius: 5px;`;
+    },
   },
   data() {
     return {
@@ -59,6 +78,5 @@ export default {
 }
 .tab-btn.selected {
   color: black;
-  border-bottom: 3px solid;
 }
 </style>
