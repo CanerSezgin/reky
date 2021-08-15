@@ -1,5 +1,15 @@
 <template>
   <div>
+    <v-row>
+      <v-text-field
+        v-model="title"
+        filled
+        hide-details
+        label="Request Name"
+        placeholder="Request Name"
+        append-icon="mdi-record-circle-outline"
+      ></v-text-field>
+    </v-row>
     <v-row class="mt-1">
       <v-card flat class="transparent" width="150">
         <v-select
@@ -54,7 +64,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { axiosRequest } from '@/utils/axios';
+import { History } from '@/classes';
 import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
@@ -79,6 +91,7 @@ export default {
       ],
 
       method: 'get',
+      title: 'Untitled Request',
       url: 'https://jsonplaceholder.typicode.com/posts',
       headers: [],
       queryList: [],
@@ -111,6 +124,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('history', ['addRecord']),
     updateQueryString(qs) {
       const indexOfQSStart = this.url.indexOf('?');
       if (indexOfQSStart !== -1) {
@@ -126,6 +140,8 @@ export default {
       });
       this.response = response;
       console.log(this.response);
+      const historyRecord = new History(this.response, this.title);
+      this.addRecord(historyRecord);
     },
   },
 };

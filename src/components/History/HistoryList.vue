@@ -18,7 +18,7 @@
                 style="width: 110px;"
                 :style="`color: ${getStatusCodeColor(req.statusCode)}`"
               >
-                {{ req.method }}
+                {{ req.method.toUpperCase() }}
               </div>
               <div class="request-title" style="width: 100%;">
                 {{ req.title }}
@@ -28,7 +28,7 @@
 
           <v-list-item-subtitle
             class="mt-1 caption"
-            v-text="req.request"
+            v-text="req.fullUrl"
           ></v-list-item-subtitle>
           <v-list-item-subtitle class="mt-1 caption">{{
             req.date | formatDate
@@ -36,9 +36,23 @@
         </v-list-item-content>
 
         <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
-          </v-btn>
+          <v-menu offset-y :position-y="100">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon color="grey lighten-1">mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list class="py-0 my-0">
+              <v-list-item
+                v-for="(action, actionIndex) in actions"
+                :key="actionIndex"
+                @click="$emit(action.type, index)"
+              >
+                <v-icon>{{ action.icon }}</v-icon>
+                <span class="ml-3">{{ action.title }}</span>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-list-item-action>
       </v-list-item>
     </v-list>
@@ -50,6 +64,18 @@ import { getStatusCodeColor } from '@/utils/statusCode';
 export default {
   props: {
     reqs: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      actions: [
+        {
+          type: 'save',
+          title: 'Save Request',
+          icon: 'mdi-content-save-settings-outline',
+        },
+        { type: 'delete', title: 'Delete', icon: 'mdi-delete' },
+      ],
+    };
   },
   methods: {
     getStatusCodeColor(statusCode) {

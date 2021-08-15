@@ -6,20 +6,22 @@
       hide-details
       placeholder="Search"
     ></v-text-field>
-    <HistoryList :reqs="results" />
+    <HistoryList :reqs="results" @save="save" @delete="removeRecord" />
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import HistoryList from '@/components/History/HistoryList';
 
 export default {
   components: { HistoryList },
   computed: {
+    ...mapState('history', ['history']),
     results() {
-      return this.reqs.filter(
+      return this.history.filter(
         (r) =>
-          (r.request || '')
+          (r.fullUrl || '')
             .toLowerCase()
             .includes(this.searchStr.toLowerCase()) ||
           (r.title || '').toLowerCase().includes(this.searchStr.toLowerCase())
@@ -29,30 +31,13 @@ export default {
   data() {
     return {
       searchStr: '',
-      reqs: [
-        {
-          date: new Date('Jan 9, 2014'),
-          method: 'DELETE',
-          request: 'https://jsonplaceholder.typicode.com/posts?a=25&b=9',
-          statusCode: 404,
-          title: 'Request Title',
-        },
-        {
-          date: new Date('May 19, 2021'),
-          method: 'GET',
-          request: 'https://another.typicode.com/posts?a=25&b=9',
-          statusCode: 300,
-          title: '',
-        },
-        {
-          date: new Date('Jan 9, 2014'),
-          method: 'POST',
-          request: 'https://jsonplaceholder.typicode.com/posts?a=25&b=9',
-          statusCode: 201,
-          title: 'Another Request',
-        },
-      ],
     };
+  },
+  methods: {
+    ...mapActions('history', ['removeRecord']),
+    save(index) {
+      console.log('coming soon', index);
+    },
   },
 };
 </script>
