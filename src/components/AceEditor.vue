@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import ace from "ace-builds";
-import "ace-builds/webpack-resolver";
+import ace from 'ace-builds';
+import 'ace-builds/webpack-resolver';
 
 export default {
   props: {
     opts: {
       type: Object,
       default: {
-        theme: "chrome",
-        language: "json",
+        theme: 'chrome',
+        language: 'json',
         readOnly: false,
       },
     },
@@ -31,15 +31,14 @@ export default {
     const editor = ace.edit(this.$refs.editor, {
       wrap: true,
       autoScrollEditorIntoView: true,
-      maxLines: 20,
-      minLines: 20,
+      maxLines: 30,
+      minLines: 30,
       theme: `ace/theme/${this.opts.theme}`,
       mode: `ace/mode/${this.opts.language}`,
       readOnly: this.opts.readOnly,
       fontSize: 16,
     });
     this.editor = editor;
-    console.log(editor);
   },
 };
 </script>

@@ -12,12 +12,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   function(response) {
+    console.log({ response });
     response.config.metadata.endTime = new Date();
     response.duration =
       response.config.metadata.endTime - response.config.metadata.startTime;
     return response;
   },
   function(error) {
+    console.log({ error });
     error.config.metadata.endTime = new Date();
     error.duration =
       error.config.metadata.endTime - error.config.metadata.startTime;
@@ -29,7 +31,10 @@ export const axiosRequest = async ({ method, url, payload, config }) => {
   try {
     const response = await axios[method](url, payload, config);
     return response;
-  } catch ({ response }) {
-    return response;
+  } catch (e) {
+    return {
+      ...e.response,
+      duration: e.duration,
+    };
   }
 };

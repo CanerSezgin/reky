@@ -30,4 +30,8 @@ export default {
 .pointer {
   cursor: pointer;
 }
+.bold {
+  font-family: Roboto, Times, serif;
+  font-weight: 600;
+}
 </style>

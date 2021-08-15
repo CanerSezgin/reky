@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-tabs fixed-tabs background-color="indigo" dark v-model="tab" ani>
+      <v-tabs fixed-tabs background-color="primary" dark v-model="tab">
         <v-tab>
           Visualize
         </v-tab>
@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import AceEditor from "@/components/AceEditor";
-import Visualize from "@/components/Response/Visualize";
+import AceEditor from '@/components/AceEditor';
+import Visualize from '@/components/Response/Visualize';
 
 export default {
   components: {
@@ -66,7 +66,7 @@ export default {
       tab: 0,
       renderKey: 0,
       editorOpts: {
-        theme: "chrome",
+        theme: 'chrome',
         readOnly: true,
       },
     };

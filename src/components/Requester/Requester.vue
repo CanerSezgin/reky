@@ -28,11 +28,12 @@
     </v-row>
 
     <v-row class="mt-4">
-      <v-col class="px-0">
+      <v-col>
         <Tabs
           :tabs="[
-            `Parameters &nbsp; ¨ ${queryList.length}`,
-            `Headers &nbsp; ¨ ${headers.length}`,
+            `Parameters &nbsp; ∷ &nbsp;  ${queryList.length}`,
+            `Headers &nbsp; ∷ &nbsp;  ${headers.length}`,
+            `Body`,
           ]"
         >
           <template v-slot:tab-0
@@ -41,6 +42,7 @@
               :queryList="queryList"
           /></template>
           <template v-slot:tab-1> <Headers :headers="headers" /> </template>
+          <template v-slot:tab-2> <BodyEditor /> </template>
         </Tabs>
       </v-col>
     </v-row>
@@ -55,11 +57,12 @@ import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
 import Tabs from '@/components/Tabs';
+import BodyEditor from '@/components/Requester/BodyEditor';
 
 import { getQueryListFromQueryString } from './QueryParamHelper';
 
 export default {
-  components: { Headers, QueryParams, Response, Tabs },
+  components: { Headers, QueryParams, Response, Tabs, BodyEditor },
   data() {
     return {
       URLError: true,
@@ -102,7 +105,6 @@ export default {
   },
   watch: {
     queryString(val) {
-      console.log('QS Changed', val);
       this.queryList = getQueryListFromQueryString(val);
     },
   },
@@ -111,8 +113,8 @@ export default {
       const indexOfQSStart = this.url.indexOf('?');
       if (indexOfQSStart !== -1) {
         this.url = this.url.substring(0, indexOfQSStart);
-        this.url += qs;
       }
+      this.url += qs;
     },
     async send() {
       const response = await axiosRequest({

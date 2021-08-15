@@ -5,35 +5,34 @@
       <div>
         Status:
         <span
-          class="ml-2 font-weight-bold"
+          class="ml-1 bold"
           :style="`color: ${statusCodeColor}`"
-          v-text="statusCode || '(request not sent)'"
-          >{{ statusCode }}</span
-        >
+          v-text="
+            statusCode ? `${statusCode} ${statusText}` : '(request not sent)'
+          "
+        ></span>
       </div>
       <v-spacer></v-spacer>
 
       <div>
-        Duration: <span>{{ duration }}</span> ms
+        Duration:
+        <span class="primary--text bold">{{ duration }}</span>
+        ms
       </div>
     </div>
 
     <div v-if="response">
-      <v-tabs fixed-tabs background-color="indigo" dark v-model="tab" ani>
-        <v-tab>
-          Body
-        </v-tab>
-        <v-tab> Headers ({{ headers.length }}) </v-tab>
-      </v-tabs>
-
-      <v-tabs-items v-model="tab">
-        <v-tab-item>
+      <Tabs
+        :tabs="[`Body`, `Headers &nbsp; ∷ &nbsp;  ${headers.length}`]"
+        color="#00bcd4"
+      >
+        <template v-slot:tab-0>
           <Body :body="response.data" :responseType="responseType" />
-        </v-tab-item>
-        <v-tab-item>
+        </template>
+        <template v-slot:tab-1>
           <Headers :headers="headers" />
-        </v-tab-item>
-      </v-tabs-items>
+        </template>
+      </Tabs>
     </div>
   </div>
 </template>
@@ -41,8 +40,18 @@
 <script>
 import Headers from '@/components/Response/Headers';
 import Body from '@/components/Response/Body';
+import Tabs from '@/components/Tabs';
+
+const getDefaultStatusText = (statusCode) => {
+  if (!statusCode || isNaN(statusCode)) return '';
+  const mapper = {
+    404: 'Not Found',
+  };
+  return mapper[statusCode] || '';
+};
+
 export default {
-  components: { Headers, Body },
+  components: { Headers, Body, Tabs },
   props: {
     response: {
       type: Object,
@@ -61,6 +70,12 @@ export default {
     },
     statusCode() {
       return this.response && this.response.status;
+    },
+    statusText() {
+      return (
+        (this.response && this.response.statusText) ||
+        getDefaultStatusText(this.statusCode)
+      );
     },
     statusCodeColor() {
       if (this.statusCode >= 200 && this.statusCode < 300) {
@@ -87,4 +102,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-tab.v-tab--active {
+  color: black;
+}
+</style>

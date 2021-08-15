@@ -1,9 +1,14 @@
 <template>
   <div>
-    <div style="display: flex;">
+    <div style="display: flex;" :style="tabButtonsContainerCSS">
       <div
         class="tab-btn"
         :class="selectedTabIndex === index ? 'selected' : ''"
+        style="min-width: 150px; text-align: center;"
+        :style="
+          (selectedTabIndex === index ? `border-color: ${color};` : '') +
+            tabButtonCSS
+        "
         @click="selectTab(index)"
         v-for="(tab, index) in tabs"
         :key="index"
@@ -23,7 +28,10 @@
 export default {
   props: {
     tabs: { type: Array, required: true },
+    color: { type: String, default: 'salmon' },
     tabContainerCSS: { type: String, required: false },
+    tabButtonsContainerCSS: { type: String, required: false },
+    tabButtonCSS: { type: String, required: false },
   },
   data() {
     return {
@@ -51,6 +59,6 @@ export default {
 }
 .tab-btn.selected {
   color: black;
-  border-bottom: 3px solid salmon;
+  border-bottom: 3px solid;
 }
 </style>

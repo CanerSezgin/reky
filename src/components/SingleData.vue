@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ObjectData from "@/components/ObjectData";
+import ObjectData from '@/components/ObjectData';
 export default {
   components: { ObjectData },
   props: {

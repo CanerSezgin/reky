@@ -8,7 +8,6 @@ export const getQueryListFromQueryString = (qs) => {
 };
 
 export const getQueryStringFromQueryList = (queryList) => {
-  console.log('hey', queryList);
   if (!queryList.length) return '';
   const paramsStr = queryList.reduce((str, param) => {
     // if QS not include = param.value returns undefined
