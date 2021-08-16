@@ -3,7 +3,7 @@
     <KeyValueForm
       :list="queryList"
       keyLabel="Parameter"
-      @valid-list-changed="validListChanged"
+      @updated="$emit('updated', queryList)"
     />
   </div>
 </template>
@@ -16,12 +16,6 @@ export default {
   components: { KeyValueForm },
   props: {
     queryList: Array,
-  },
-  methods: {
-    validListChanged() {
-      const queryString = getQueryStringFromQueryList(this.queryList);
-      if (queryString) this.$emit('query-string-changed', queryString);
-    },
   },
 };
 </script>

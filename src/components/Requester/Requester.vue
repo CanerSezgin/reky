@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-text-field
-        v-model="title"
+        v-model="req.title"
         filled
         hide-details
         label="Request Name"
@@ -13,7 +13,7 @@
     <v-row class="mt-1">
       <v-card flat class="transparent" width="150">
         <v-select
-          v-model="method"
+          v-model="req.method"
           :items="METHODS"
           item-text="text"
           item-value="value"
@@ -24,12 +24,12 @@
       </v-card>
 
       <v-text-field
-        v-model="url"
+        v-model="req.urlWithParams"
         label="URL"
         aria-autocomplete="off"
         filled
-        :error-messages="URLError ? 'Invalid URL' : null"
         hide-details
+        @keyup.enter="send"
       ></v-text-field>
 
       <v-btn @click="send" x-large height="56">
@@ -37,21 +37,22 @@
       </v-btn>
     </v-row>
 
+    {{ req }}
     <v-row class="mt-4">
       <v-col>
         <Tabs
           :tabs="[
-            `Parameters &nbsp; ∷ &nbsp;  ${queryList.length}`,
-            `Headers &nbsp; ∷ &nbsp;  ${headers.length}`,
+            `Parameters &nbsp; ∷ &nbsp;  ${req.params.length}`,
+            `Headers &nbsp; ∷ &nbsp;  ${req.headers.length}`,
             `Body`,
           ]"
         >
           <template v-slot:tab-0
-            ><QueryParams
-              @query-string-changed="updateQueryString"
-              :queryList="queryList"
+            ><QueryParams :queryList="req.params" @updated="req.update()"
           /></template>
-          <template v-slot:tab-1> <Headers :headers="headers" /> </template>
+          <template v-slot:tab-1>
+            <Headers :headers="req.headers" @updated="req.update()" />
+          </template>
           <template v-slot:tab-2> <BodyEditor /> </template>
         </Tabs>
       </v-col>
@@ -59,14 +60,19 @@
 
     <v-divider></v-divider>
 
-    <Response :response="response" />
+    <div v-if="response && response.config">
+      <Response :response="response" />
+    </div>
+    <div v-else-if="response && !response.config && response.e">
+      {{ response.e.message }}
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { axiosRequest } from '@/utils/axios';
-import { History } from '@/classes';
+import { History, RequestObj } from '@/classes';
 import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
@@ -79,7 +85,6 @@ export default {
   components: { Headers, QueryParams, Response, Tabs, BodyEditor },
   data() {
     return {
-      URLError: true,
       METHODS: [
         { text: 'GET', value: 'get' },
         { text: 'POST', value: 'post' },
@@ -89,49 +94,50 @@ export default {
         { text: 'HEAD', value: 'head' },
         { text: 'OPTIONS', value: 'options' },
       ],
-
-      method: 'get',
-      title: 'Untitled Request',
-      url: 'https://jsonplaceholder.typicode.com/posts',
-      headers: [],
-      queryList: [],
+      req: {},
       response: null,
     };
   },
   computed: {
-    urlComponents() {
-      try {
-        this.URLError = false;
-        return new URL(this.url);
-      } catch (error) {
-        this.URLError = true;
-        return null;
-      }
+    title() {
+      return this.req.title;
     },
-    queryString() {
-      if (this.urlComponents) {
-        return this.urlComponents.search;
-      }
-
-      const indexOfQSStart = this.url.indexOf('?');
-      if (indexOfQSStart === -1) return '';
-      return this.url.substring(indexOfQSStart);
+    url() {
+      return this.req.url;
+    },
+    method() {
+      return this.req.method;
+    },
+    urlWithParams() {
+      return this.req.urlWithParams;
     },
   },
   watch: {
-    queryString(val) {
-      this.queryList = getQueryListFromQueryString(val);
+    title() {
+      this.req.update();
     },
+    url() {
+      this.req.update();
+    },
+    method() {
+      this.req.update();
+    },
+    urlWithParams(val) {
+      if (val) {
+        const [url = '', queryString = ''] = val.split('?');
+        this.req.url = url;
+        this.req.params = getQueryListFromQueryString(
+          val.includes('?') ? `?${queryString}` : ''
+        );
+      }
+    },
+  },
+  created() {
+    this.req = new RequestObj(this.$route.query);
+    console.log(this.req);
   },
   methods: {
     ...mapActions('history', ['addRecord']),
-    updateQueryString(qs) {
-      const indexOfQSStart = this.url.indexOf('?');
-      if (indexOfQSStart !== -1) {
-        this.url = this.url.substring(0, indexOfQSStart);
-      }
-      this.url += qs;
-    },
     async send() {
       const response = await axiosRequest({
         method: this.method,

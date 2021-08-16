@@ -19,7 +19,6 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    console.log({ error });
     error.config.metadata.endTime = new Date();
     error.duration =
       error.config.metadata.endTime - error.config.metadata.startTime;
@@ -33,7 +32,8 @@ export const axiosRequest = async ({ method, url, payload, config }) => {
     return response;
   } catch (e) {
     return {
-      ...e.response,
+      e,
+      ...(e.response || {}),
       duration: e.duration,
     };
   }

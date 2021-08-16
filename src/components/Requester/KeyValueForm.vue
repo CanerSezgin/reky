@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     validList(val) {
-      this.$emit('valid-list-changed', val);
+      this.$emit('updated', val);
     },
   },
   methods: {

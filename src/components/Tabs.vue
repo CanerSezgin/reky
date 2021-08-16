@@ -4,7 +4,7 @@
       <div
         class="tab-btn"
         :class="selectedTabIndex === index ? 'selected' : ''"
-        style="min-width: 150px; text-align: center;"
+        style="min-width: 125px; text-align: center;"
         :style="(selectedTabIndex === index ? selectedCSS : '') + tabButtonCSS"
         @click="selectTab(index)"
         v-for="(tab, index) in tabs"

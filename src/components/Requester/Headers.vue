@@ -1,6 +1,10 @@
 <template>
   <div>
-    <KeyValueForm :list="headers" keyLabel="Header" />
+    <KeyValueForm
+      :list="headers"
+      keyLabel="Header"
+      @updated="$emit('updated', headers)"
+    />
   </div>
 </template>
 

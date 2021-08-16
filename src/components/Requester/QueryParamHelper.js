@@ -1,5 +1,7 @@
 export const getQueryListFromQueryString = (qs) => {
-  if (!qs || qs[0] !== '?') return [];
+  if (!qs) return [];
+  if (qs.length === 1 && qs[0] === '?') return [{ key: '', value: '' }];
+
   const questionMarkedRemoved = qs.substring(1);
   return questionMarkedRemoved.split('&').map((query) => {
     const [key, value] = query.split('=');

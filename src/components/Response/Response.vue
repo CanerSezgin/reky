@@ -85,7 +85,10 @@ export default {
       return (this.response && this.response.duration) || 0;
     },
     responseType() {
-      const contentType = this.response.headers['content-type'];
+      const contentType =
+        this.response &&
+        this.response.headers &&
+        this.response.headers['content-type'];
 
       if (contentType.includes('json')) return 'json';
       else if (contentType.includes('html')) return 'html';
