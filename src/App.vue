@@ -105,6 +105,7 @@ export default {
   font-weight: 600;
   line-height: 1.75rem;
   cursor: pointer;
+  letter-spacing: 2px;
 }
 .logo:hover {
   color: #00bcd4;
@@ -114,9 +115,11 @@ export default {
 <style lang="scss">
 .v-application {
   [class*='text-'] {
-    font-family: Tahoma, Verdana, Segoe, sans-serif;
+    font-size: 15px;
+    font-family: Roboto, Verdana, Segoe, sans-serif;
   }
-  font-family: Tahoma, Verdana, Segoe, sans-serif;
+  font-size: 15px;
+  font-family: Roboto, Verdana, Segoe, sans-serif;
 }
 .longtext {
   word-wrap: break-word;

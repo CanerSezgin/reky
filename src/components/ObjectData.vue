@@ -1,7 +1,7 @@
 <template>
-  <v-layout row wrap>
+  <v-layout row wrap class="objectData">
     <v-flex xs4>
-      <v-list-item-title v-text="objKey"></v-list-item-title>
+      <div class="objKey" v-text="objKey"></div>
     </v-flex>
     <v-flex xs8>
       <div
@@ -15,7 +15,7 @@
           contain
           class="mb-2"
         ></v-img>
-        <div>{{ objValue }}</div>
+        <div class="objValue">{{ objValue }}</div>
       </div>
       <div v-else class="mt-4">
         <object-data
@@ -39,3 +39,11 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.objValue {
+  font-size: 14px;
+}
+.objKey {
+  font-size: 14.5px;
+}
+</style>
