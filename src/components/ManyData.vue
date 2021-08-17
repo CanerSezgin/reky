@@ -111,7 +111,6 @@ export default {
   },
   methods: {
     changeStatus(header) {
-      console.log(header);
       header.status = !header.status;
     },
     cleanTable() {

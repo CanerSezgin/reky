@@ -1,30 +1,16 @@
 import { getQueryStringFromQueryList } from '@/components/Requester/QueryParamHelper.js';
 
-export class History {
-  constructor(response, title) {
-    const { config, status } = response;
-    const { method, url } = config;
-
-    this.date = new Date();
-    this.method = method;
-    this.statusCode = status;
-    this.fullUrl = url;
-    this.title = title || '';
-  }
-}
-
 export class RequestObj {
   constructor(queries) {
     const {
-      title = '',
+      title = 'Untitled Request',
       url = '',
-      method = '',
+      method = 'get',
       params = '',
       headers = '',
       body = '',
     } = queries;
 
-    console.log({ params });
     this.title = title;
     this.url = url;
     this.method = method.toLowerCase();
@@ -67,7 +53,14 @@ export class RequestObj {
       : '';
     const body = this.body ? `body=${objToStr(this.body)}` : '';
 
-    const fullStr = `?${url}&${title}&${method}&${params}&${headers}`;
+    const fullStr =
+      '?' +
+      url +
+      (title ? `&${title}` : '') +
+      (method ? `&${method}` : '') +
+      (params ? `&${params}` : '') +
+      (headers ? `&${headers}` : '');
+
     return encoded ? encodeURI(fullStr) : fullStr;
   }
   update() {

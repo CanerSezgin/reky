@@ -12,7 +12,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   function(response) {
-    console.log({ response });
     response.config.metadata.endTime = new Date();
     response.duration =
       response.config.metadata.endTime - response.config.metadata.startTime;

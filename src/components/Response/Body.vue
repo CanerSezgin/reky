@@ -2,9 +2,7 @@
   <div>
     <div>
       <v-tabs fixed-tabs background-color="primary" dark v-model="tab">
-        <v-tab>
-          Visualize
-        </v-tab>
+        <v-tab> Visualize </v-tab>
         <v-tab> Pretty ({{ responseType }}) </v-tab>
         <v-tab>
           Raw
@@ -16,7 +14,7 @@
 
       <v-tabs-items v-model="tab" :key="renderKey" class="mt-2">
         <v-tab-item>
-          <Visualize :json="body" />
+          <Visualize :body="body" :responseType="responseType" />
         </v-tab-item>
         <v-tab-item>
           <editor

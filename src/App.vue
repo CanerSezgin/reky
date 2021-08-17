@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-app-bar app clipped-right flat height="72">
       <div class="mx-5 text-center">
-        <div @click="$router.push('/')" class="logo">
+        <div @click="newRequest()" class="logo">
           REKY
         </div>
         <div class="caption" style="line-height: 0.9rem">
@@ -114,9 +114,9 @@ export default {
 <style lang="scss">
 .v-application {
   [class*='text-'] {
-    font-family: Tahoma, Verdana, Segoe, sans-serif !important;
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
   }
-  font-family: Tahoma, Verdana, Segoe, sans-serif !important;
+  font-family: Tahoma, Verdana, Segoe, sans-serif;
 }
 .longtext {
   word-wrap: break-word;

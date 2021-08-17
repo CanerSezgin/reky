@@ -6,22 +6,37 @@
       hide-details
       placeholder="Search"
     ></v-text-field>
-    <HistoryList :reqs="results" @save="save" @delete="removeRecord" />
+    <RequestCard
+      :reqs="results"
+      :actions="actions"
+      @save="save"
+      @delete="removeRecord"
+    />
+
+    <div v-if="!results.length">
+      <div
+        class="mt-2 font-weight-bold text-center"
+        style="color: salmon; font-family: Lato; font-size: 1.05rem;"
+      >
+        No Records Found
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import HistoryList from '@/components/History/HistoryList';
+import { getStatusCodeColor } from '@/utils/statusCode';
+import RequestCard from '@/components/RequestCard';
 
 export default {
-  components: { HistoryList },
+  components: { RequestCard },
   computed: {
     ...mapState('history', ['history']),
     results() {
       return this.history.filter(
         (r) =>
-          (r.fullUrl || '')
+          (r.urlWithParams || '')
             .toLowerCase()
             .includes(this.searchStr.toLowerCase()) ||
           (r.title || '').toLowerCase().includes(this.searchStr.toLowerCase())
@@ -31,10 +46,21 @@ export default {
   data() {
     return {
       searchStr: '',
+      actions: [
+        {
+          type: 'save',
+          title: 'Save Request',
+          icon: 'mdi-content-save-settings-outline',
+        },
+        { type: 'delete', title: 'Delete', icon: 'mdi-delete' },
+      ],
     };
   },
   methods: {
     ...mapActions('history', ['removeRecord']),
+    getStatusCodeColor(statusCode) {
+      return getStatusCodeColor(statusCode);
+    },
     save(index) {
       console.log('coming soon', index);
     },

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-list two-line>
+    <v-list :two-line="twoLine">
       <v-list-item v-for="(req, index) in reqs" :key="index">
-        <v-list-item-avatar @click="" style="cursor:pointer">
+        <v-list-item-avatar @click="newRequest(req.qs)" style="cursor:pointer">
           <span
             class="status-code"
             :style="`color: ${getStatusCodeColor(req.statusCode)}`"
@@ -11,7 +11,10 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title @click="" style="cursor:pointer">
+          <v-list-item-title
+            @click="newRequest(req.qs, req.id)"
+            style="cursor:pointer"
+          >
             <div style="display: flex;">
               <div
                 class="status-code"
@@ -28,14 +31,14 @@
 
           <v-list-item-subtitle
             class="mt-1 caption"
-            v-text="req.fullUrl"
+            v-text="req.urlWithParams"
           ></v-list-item-subtitle>
           <v-list-item-subtitle class="mt-1 caption">{{
             req.date | formatDate
           }}</v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-list-item-action>
+        <v-list-item-action v-if="actions.length">
           <v-menu offset-y :position-y="100">
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
@@ -63,19 +66,9 @@
 import { getStatusCodeColor } from '@/utils/statusCode';
 export default {
   props: {
-    reqs: { type: Array, default: () => [] },
-  },
-  data() {
-    return {
-      actions: [
-        {
-          type: 'save',
-          title: 'Save Request',
-          icon: 'mdi-content-save-settings-outline',
-        },
-        { type: 'delete', title: 'Delete', icon: 'mdi-delete' },
-      ],
-    };
+    reqs: { type: Array, default: () => [] }, // [ { qs, statusCode, method, title, urlWithParams, date } ]
+    twoLine: { type: Boolean, default: true },
+    actions: { type: Array, default: () => [] },
   },
   methods: {
     getStatusCodeColor(statusCode) {

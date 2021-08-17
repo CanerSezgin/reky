@@ -12,6 +12,20 @@ Vue.use(VueAnalytics, {
   id: 'UA-145060126-1',
 });
 
+Vue.mixin({
+  methods: {
+    newRequest(qs = '?title=Untitled Request') {
+      const currentPath = decodeURIComponent(this.$route.fullPath);
+      const newPath = `/${qs}&timestamp=${new Date().getTime()}`;
+      const isSamePath = currentPath === newPath;
+      console.log(newPath);
+      if (!isSamePath) {
+        this.$router.push(newPath);
+      }
+    },
+  },
+});
+
 new Vue({
   router,
   store,

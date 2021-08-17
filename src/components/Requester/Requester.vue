@@ -30,6 +30,8 @@
         filled
         hide-details
         @keyup.enter="send"
+        :error="errors.url"
+        @keyup="validate"
       ></v-text-field>
 
       <v-btn @click="send" x-large height="56">
@@ -37,7 +39,6 @@
       </v-btn>
     </v-row>
 
-    {{ req }}
     <v-row class="mt-4">
       <v-col>
         <Tabs
@@ -72,7 +73,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { axiosRequest } from '@/utils/axios';
-import { History, RequestObj } from '@/classes';
+import { RequestObj } from '@/classes';
 import Headers from '@/components/Requester/Headers';
 import QueryParams from '@/components/Requester/QueryParams';
 import Response from '@/components/Response/Response';
@@ -96,6 +97,9 @@ export default {
       ],
       req: {},
       response: null,
+      errors: {
+        url: false,
+      },
     };
   },
   computed: {
@@ -110,6 +114,9 @@ export default {
     },
     urlWithParams() {
       return this.req.urlWithParams;
+    },
+    timestamp() {
+      return this.$route.query.timestamp || null;
     },
   },
   watch: {
@@ -131,23 +138,51 @@ export default {
         );
       }
     },
+    timestamp(val) {
+      if (val) {
+        this.req = new RequestObj(this.$route.query);
+      }
+    },
   },
   created() {
     this.req = new RequestObj(this.$route.query);
-    console.log(this.req);
   },
   methods: {
     ...mapActions('history', ['addRecord']),
     async send() {
-      const response = await axiosRequest({
-        method: this.method,
-        url: this.url,
-        config: {},
-      });
-      this.response = response;
-      console.log(this.response);
-      const historyRecord = new History(this.response, this.title);
-      this.addRecord(historyRecord);
+      if (this.validate()) {
+        const response = await axiosRequest({
+          method: this.method,
+          url: this.url,
+          config: {},
+        });
+        this.response = response;
+        this.addRecord({
+          date: new Date(),
+          statusCode: response.status,
+          ...this.req,
+        });
+      }
+    },
+    validate() {
+      const pattern = new RegExp(
+        '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+          '(\\#[-a-z\\d_]*)?$',
+        'i'
+      ); // fragment locator
+
+      const isValid = pattern.test(this.req.urlWithParams);
+      if (!isValid) {
+        this.errors.url = true;
+      } else {
+        this.errors.url = false;
+      }
+
+      return isValid;
     },
   },
 };
