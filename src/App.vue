@@ -7,7 +7,7 @@
         </div>
         <div class="caption" style="line-height: 0.9rem">
           <div>Open Source API</div>
-          <div>Development Environment</div>
+          <div>Development Platform</div>
         </div>
       </div>
       <GithubButton
@@ -86,7 +86,7 @@ export default {
           title: 'Twitter',
           icon: 'mdi-twitter',
           link:
-            'https://twitter.com/intent/tweet?text=Reky is an open source API development environment. It automatically visualizes API response with outstanding graphs. 🚀🚀 reky.org&hashtags=reky,api,devtools',
+            'https://twitter.com/intent/tweet?text=Reky is an open source API development platform. It automatically visualizes API response with outstanding graphs. 🚀🚀 reky.org&hashtags=reky,api,devtools',
         },
       ],
     };
