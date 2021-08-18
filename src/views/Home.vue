@@ -52,20 +52,8 @@ export default {
       ],
     };
   },
-  created() {
-    this.track();
-  },
   mounted() {
     this.screenWidth = window.innerWidth;
-  },
-  methods: {
-    track() {
-      if (window.location.hostname === 'localhost') {
-        console.log('Tracking', this.$route.name);
-      } else {
-        this.$ga.page('/');
-      }
-    },
   },
 };
 </script>

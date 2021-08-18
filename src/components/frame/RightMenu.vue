@@ -49,15 +49,6 @@ export default {
       examples: [
         {
           statusCode: 200,
-          title: 'Get Dog Images',
-          url: 'https://dog.ceo/api/breeds/image/random/3',
-          method: 'get',
-          qs:
-            '?url=https://dog.ceo/api/breeds/image/random/3&title=Get Dog Images&method=get',
-          urlWithParams: 'https://dog.ceo/api/breeds/image/random/3',
-        },
-        {
-          statusCode: 200,
           title: 'Get All Posts [ DataTable ]',
           url: 'https://jsonplaceholder.typicode.com/posts',
           method: 'get',
@@ -74,6 +65,15 @@ export default {
           qs:
             '?url=https://api.github.com/users/1&title=Get First User [ Card ]&method=get',
           urlWithParams: 'https://api.github.com/users/1',
+        },
+        {
+          statusCode: 200,
+          title: 'Get Dog Images',
+          url: 'https://dog.ceo/api/breeds/image/random/3',
+          method: 'get',
+          qs:
+            '?url=https://dog.ceo/api/breeds/image/random/3&title=Get Dog Images&method=get',
+          urlWithParams: 'https://dog.ceo/api/breeds/image/random/3',
         },
       ],
     };

@@ -91,9 +91,19 @@ export default {
       ],
     };
   },
+  created() {
+    this.track();
+  },
   methods: {
     goTo(url) {
       window.open(url, '_blank');
+    },
+    track() {
+      if (window.location.hostname === 'localhost') {
+        console.log('Tracking', this.$route);
+      } else {
+        this.$gtag.pageview(this.$route);
+      }
     },
   },
 };

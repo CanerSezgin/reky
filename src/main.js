@@ -3,13 +3,13 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
-import VueAnalytics from 'vue-analytics';
+import VueGtag from 'vue-gtag';
 import './filters';
 
 Vue.config.productionTip = false;
 
-Vue.use(VueAnalytics, {
-  id: 'UA-145060126-1',
+Vue.use(VueGtag, {
+  config: { id: 'G-B84G1Q6S94' },
 });
 
 Vue.mixin({
