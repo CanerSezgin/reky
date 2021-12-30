@@ -2,7 +2,7 @@
 
 Reky is an open source API development platform which automatically visualizes API response with outstanding graphs and help you figure out the data-structure in it swiftly.
 
-[reky.org](reky.org)
+[reky.org](https://www.reky.org)
 
 ## Contributing
 
