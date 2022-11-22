@@ -18,9 +18,9 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-router": "~4.4.0",
-    "@vue/cli-plugin-vuex": "~4.4.0",
-    "@vue/cli-service": "^4.5.13",
+    "@vue/cli-plugin-router": "~5.0.8",
+    "@vue/cli-plugin-vuex": "~5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-vuetify": "~2.0.7",
